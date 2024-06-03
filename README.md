@@ -141,17 +141,17 @@ void MainWindow::onSaveClicked()
 
 void MainWindow::syncItemFromTable1(const QModelIndex& index)
 {
-    qDebug() << "bnr7890::" << Qt::endl;
-    QString newdata = tableModel->data(index, Qt::EditRole).toString();
-    if (newdata.toInt(0) > 0 || newdata.isEmpty() || newdata.isNull())
-    {
-
-    }
-    else
-        QMessageBox::information(this, tr("Table 1"), tr("Enter correct values"));
-
+    ui->tableView_2->setModel(tableModel);   //naveen
 
 }
+void MainWindow::on_tableView_clicked(const QModelIndex &index) //naveen
+{
+    if(ui->actionsynchronize->isChecked())
+    {
+     connect(tableModel, &QStandardItemModel::dataChanged, this, &MainWindow::syncItemFromTable1);
+    }
+}
+
 
 void MainWindow::syncItemFromTable2(const QModelIndex& index)
 {
