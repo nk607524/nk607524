@@ -1,33 +1,92 @@
--
-void mainview::saveTableData()
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-    QString fileName = QString("honeywell.csv");
-    QFile file(fileName);
+    ui->setupUi(this);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showmsg);
 
-    if (file.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&file);
-
-        // Write header
-        for (int col = 0; col < tableModel->columnCount(); ++col) {
-            stream << tableModel->headerData(col, Qt::Horizontal).toString();
-            if (col < tableModel->columnCount() - 1)
-                stream << ",";
-        }
-        stream << "\n";
-
-        // Write data
-        for (int row = 0; row < tableModel->rowCount(); ++row) {
-            for (int col = 0; col < tableModel->columnCount(); ++col) {
-                stream << tableModel->data(tableModel->index(row, col)).toString();
-                if (col < tableModel->columnCount() - 1)
-                    stream << ",";
-            }
-            stream << "\n";
-        }
-
-        file.close();
-    }
-    else {
-        QMessageBox::information(this, tr("CSV FILE"), tr("CSV file not found"));
-    }
 }
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::showmsg()
+{
+   
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Message with Image");
+    QLabel *imageLabel = new QLabel(&msgBox);
+
+    QPixmap pixmap(":/image/iris.png"); // Ensure the path to your image is correct
+    imageLabel->setPixmap(pixmap);
+    imageLabel->setGeometry(10,30,50,50);
+    msgBox.setText("Visual Network Version 9.2.0.0 \n"
+                   "Copyright @ Honeywell International Inc.,2006-2021.All rights reseved \n"
+                   "This software, all information and expression contains trade secrets and \n"
+                   "May  ");
+
+
+
+          QVBoxLayout *layout = new QVBoxLayout;
+          layout->addWidget(imageLabel);
+
+          msgBox.layout()->addItem(layout);
+
+
+    msgBox.exec();
+
+}
+
+
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showmsg);
+
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::showmsg()
+{
+   
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Message with Image");
+    QLabel *imageLabel = new QLabel(&msgBox);
+
+    QPixmap pixmap(":/image/iris.png"); // Ensure the path to your image is correct
+    imageLabel->setPixmap(pixmap);
+    imageLabel->setGeometry(10,30,50,50);
+    msgBox.setText("Visual Network Version 9.2.0.0 \n"
+                   "Copyright @ Honeywell International Inc.,2006-2021.All rights reseved \n"
+                   "This software, all information and expression contains trade secrets and \n"
+                   "May  ");
+
+
+
+          QVBoxLayout *layout = new QVBoxLayout;
+          layout->addWidget(imageLabel);
+
+          msgBox.layout()->addItem(layout);
+
+
+    msgBox.exec();
+
+
+}
+
+
