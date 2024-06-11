@@ -27,6 +27,13 @@ Aboutvn::Aboutvn(QWidget *parent)
 {
     ui.setupUi(this);
     connect(ui.actionAbout, &QAction::triggered, this, &Aboutvn::showHelpWidget);
+     Naveen = "Visusal Network version 9.2.0.0 
+        copy right Honeywell International inc > , 2006 - 2021.All rights reserved/n
+
+        This software, all informationand expression contains trade secretsand/n
+        may not, in whole or in part, be licenced, used, duplicate, or disclosed for any purpose without prior written permission of Honeywell/n
+        international inc/n";
+
 }
 
 Aboutvn::~Aboutvn()
