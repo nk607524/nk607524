@@ -1,99 +1,77 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+
+#include <QtWidgets/QMainWindow>
+#include "ui_Aboutvn.h"
+#include "QtWidgetsClass.h"
+
+//#include "QtWidgetsClass.h"
+
+class Aboutvn : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    Aboutvn(QWidget *parent = nullptr);
+    ~Aboutvn();
+public slots:
+    void showHelpWidget();
+    
+private:
+    Ui::AboutvnClass ui;
+};
+
+#include "Aboutvn.h"
+
+Aboutvn::Aboutvn(QWidget *parent)
+    : QMainWindow(parent)
+{
+    ui.setupUi(this);
+    connect(ui.actionAbout, &QAction::triggered, this, &Aboutvn::showHelpWidget);
+}
+
+Aboutvn::~Aboutvn()
+{}
+
+void Aboutvn::showHelpWidget()
+{
+    QtWidgetsClass *widget = new QtWidgetsClass(this);
+    widget->show(); 
+}
+
+
+#pragma once
 
 #include <QMainWindow>
-#include "dialog.h"
+#include "ui_QtWidgetsClass.h"
 
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+class QtWidgetsClass : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
-public slots:
-        void showHelpDialog();
-
-
-private:
-    Ui::MainWindow *ui;
-};
-#endif // MAINWINDOW_H
-
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showHelpDialog);
-
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::showHelpDialog()
-{
-    Dialog *naveen = new Dialog;
-        naveen->show();
-}
-
-#ifndef DIALOG_H
-#define DIALOG_H
-
-#include <QDialog>
-
-namespace Ui {
-class Dialog;
-}
-
-class Dialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit Dialog(QWidget *parent = nullptr);
-    ~Dialog();
-
+	QtWidgetsClass(QWidget *parent = nullptr);
+	~QtWidgetsClass();
 private slots:
-    void on_pushButton_clicked();
+	void on_okButton_clicked();
 
 private:
-    Ui::Dialog *ui;
+	Ui::QtWidgetsClassClass ui;
 };
 
-#endif // DIALOG_H
+#include "Aboutvn.h"
 
-
-#include "dialog.h"
-#include "ui_dialog.h"
-
-Dialog::Dialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Dialog)
+Aboutvn::Aboutvn(QWidget *parent)
+    : QMainWindow(parent)
 {
-    ui->setupUi(this);
-
+    ui.setupUi(this);
+    connect(ui.actionAbout, &QAction::triggered, this, &Aboutvn::showHelpWidget);
 }
 
-Dialog::~Dialog()
-{
-    delete ui;
-}
+Aboutvn::~Aboutvn()
+{}
 
-void Dialog::on_pushButton_clicked()
+void Aboutvn::showHelpWidget()
 {
-    this->accept();
+    QtWidgetsClass *widget = new QtWidgetsClass(this);
+    widget->show(); 
 }
-
