@@ -1,5 +1,5 @@
 #pragma once
-
+"Visusal Network version 9.2.3 \n copy right Honeywell International inc > , 2006 - 2021.All rights reserved/n This software, all informationand expression contains trade secretsand/nmay not, in whole or in part, be licenced, used, duplicate, or disclosed for any purpose without prior written permission of Honeywell/ninternational inc/n"
 #include <QtWidgets>
 #include <QMainWindow>
 #include "ui_QtVNetMainWindow.h"
