@@ -1,3 +1,70 @@
+#pragma once
+
+#include <QtWidgets>
+#include <QMainWindow>
+#include "ui_QtVNetMainWindow.h"
+#include "QtSceneView.h"
+#include "QtVNetModes.h"
+#include "VNetQtWindowManagement.h"
+
+#ifndef __VNet_1_0SceneViewController_HeaderFile__
+#include <VNet_1_0SceneViewController.h>
+#endif //__VNet_1_0ViewController_HeaderFile__
+
+#ifndef __Ptr_VNet_1_0SceneViewController_HeaderFile__
+#include <Ptr_VNet_1_0SceneViewController.h>
+#endif
+
+
+class QtVNetMainWindow  : public QMainWindow
+{
+	Q_OBJECT
+
+public:
+	static QtVNetMainWindow* getInstance(Ptr(CVNet_1_0AppController) p_AppCtrl = NULL);
+	
+	~QtVNetMainWindow();
+
+
+	void setCurrentViewPath(Ptr(CVNet_1_0AppController) p_AppCtrl, TCollection_AsciiString p_strViewPath);
+	TCollection_AsciiString getCurrentViewPath() { return m_strViewPath; }
+
+	void DestroyFlwWnds();
+	void CreateFlwWnds();
+
+public slots:
+	
+	void launchSceneWizard();
+	void launchBCManagement();
+	
+
+protected:
+	QtVNetMainWindow(QWidget *parent = 0);
+
+	virtual void closeEvent(QCloseEvent* event) override;
+	void createActions();
+
+	static QtVNetMainWindow* instance;
+
+private:
+	
+	QtVNetModes* m_VnetMode;
+	VNetQtWindowManagement* m_VnetWinMan;
+	ads::CDockManager* m_DockManager;
+
+	Ui::QtVNetMainWindowClass ui;
+	//temp variables
+	Ptr(CVNet_1_0AppController) m_AppCtrl;
+	TCollection_AsciiString m_strViewPath;
+};
+
+
+
+
+
+
+
+
 
 #include "QtVNetMainWindow.h"
 #include "VNET_2_0_GUI.h"
