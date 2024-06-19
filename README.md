@@ -119,7 +119,7 @@ QWidget *Delegate::createEditor(QWidget *parent, const QStyleOptionViewItem &opt
         if(index.column() == 1)
         {
         QComboBox *comboBox = new QComboBox(parent);
-        comboBox->addItems({"Option 1", "Option 2", "Option 3"});
+        comboBox->addItems({"Standard Tube", "Naveen", "Option 3","bnr"});
         return comboBox;
         }
     } else if (index.row() == 1) {
