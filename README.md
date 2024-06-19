@@ -57,6 +57,10 @@ TubeFREPropertiesWidget::TubeFREPropertiesWidget(QWidget *parent)
 	 // Set the size policy and minimum size for tableView2
 	 ui.tableView_2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	 ui.tableView_2->setMinimumSize(550, 150);
+   Delegate *bnr = new Delegate(ui->tableView);
+//    ui->tableView->setItemDelegateForColumn(bnr);
+//    ui->tableView->setItemDelegateForRow(2,bnr);
+    ui->tableView->setItemDelegate(bnr);
 
 	
 }
@@ -70,37 +74,6 @@ TubeFREPropertiesWidget::TubeFREPropertiesWidget(QWidget *parent)
 TubeFREPropertiesWidget::~TubeFREPropertiesWidget()
 {}
 
-
-
-
-
-
-
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QMainWindow>
-#include <QStandardItemModel>
-#include "delegate.h"
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
-private:
-    Ui::MainWindow *ui;
-    QStandardItemModel *model;
-
-};
-#endif // MAINWINDOW_H
 
 
 #ifndef DELEGATE_H
@@ -128,35 +101,7 @@ public:
 #endif // DELEGATE_H
 
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    model = new QStandardItemModel(4,2,this);
-    for(int row =0 ;row <4 ; ++row)
-    {
-        for(int col = 0;col <2;++col)
-        {
-            QModelIndex index = model->index(row,col,QModelIndex());
-            model->setData(index,0);
-
-        }
-    }
-    ui->tableView->setModel(model);
-    Delegate *bnr = new Delegate(ui->tableView);
-//    ui->tableView->setItemDelegateForColumn(bnr);
-//    ui->tableView->setItemDelegateForRow(2,bnr);
-    ui->tableView->setItemDelegate(bnr);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
 
 
 #include "delegate.h"
