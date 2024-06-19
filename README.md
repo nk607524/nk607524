@@ -1,3 +1,81 @@
+#include "TubeFREPropertiesWidget.h"
+
+
+TubeFREPropertiesWidget::TubeFREPropertiesWidget(QWidget *parent)
+	: QWidget(parent)
+{
+	ui.setupUi(this);
+	model = new QStandardItemModel(9, 2, this);///row,coloumn,parent
+
+
+
+	model->setItem(0,0, new QStandardItem("Normal Flow Section"));
+	model->setItem(1,0, new QStandardItem("Diameter Outer (in)"));
+	model->setItem(2,0, new QStandardItem("Thickness Wall (in)"));
+	model->setItem(3,0, new QStandardItem("Quantity"));
+	model->setItem(4, 0, new QStandardItem("Equivalent Diameter (in)"));
+	model->setItem(5, 0, new QStandardItem("Hydraulic Diameter (in)"));
+	model->setItem(6, 0, new QStandardItem("Perimeter Wetted(in)"));
+	model->setItem(7, 0, new QStandardItem("Area(in-in)"));
+	model->setItem(8, 0, new QStandardItem("Total-Area (in-in)"));
+
+	 
+
+	 model1 = new QStandardItemModel(6, 2, this);///row,coloumn,parent
+
+	 model1->setItem(0, 0, new QStandardItem("select a frictional factor correlation  "));
+	 model1->setItem(1, 0, new QStandardItem("Enterance Loss (Optional)"));
+	 model1->setItem(2, 0, new QStandardItem("Length (Inches)"));
+	 model1->setItem(3, 0, new QStandardItem("Roughness Absolute(ft)"));
+	 model1->setItem(4, 0, new QStandardItem("Relative Roughness"));
+	 model1->setItem(5, 0, new QStandardItem("Moody Friction Factor"));
+
+	 
+	 ui.tableView->setModel(model);
+	 ui.tableView_2->setModel(model1);
+
+	 // Automatically resize the columns to fit the contents
+	 ui.tableView->resizeColumnsToContents();
+	 ui.tableView_2->resizeColumnsToContents();
+
+
+	 // Make the last column stretch to fill the available space
+	 ui.tableView->horizontalHeader()->setStretchLastSection(true);
+	 ui.tableView_2->horizontalHeader()->setStretchLastSection(true);
+
+	 // Optionally, you can also set the section resize mode for all columns to make them expand automatically
+	 ui.tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	 ui.tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+	
+
+
+	 // Set the size policy and minimum size for tableView1
+	 ui.tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	 ui.tableView->setMinimumSize(200, 200); // Adjust the minimum size as needed
+
+	 // Set the size policy and minimum size for tableView2
+	 ui.tableView_2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	 ui.tableView_2->setMinimumSize(550, 150);
+
+	
+}
+
+
+	
+
+
+
+
+TubeFREPropertiesWidget::~TubeFREPropertiesWidget()
+{}
+
+
+
+
+
+
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
