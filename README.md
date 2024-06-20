@@ -24,7 +24,7 @@ private:
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
-void MainWindow::on_toolBox_2_currentChanged(int index)
+void MainWindow::on_toolBox_currentChanged(int index)
 {
     qDebug()<<"bnr start"<<endl;
         Form *naveen = new Form();
