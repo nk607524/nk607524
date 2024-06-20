@@ -1,37 +1,155 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
+#include <QWidget>
+#include <QtWidgets>
 #include <QMainWindow>
-#include "form.h"
+#include "TubeFREPropertiesWidget.h"
+#include <QToolBox>
+#include "ui_TubeFREPropertiesWidget.h"
+#include "Flow_Area.h"
+#include "Friction_Factor.h"
+#include "Heat_Transfer.h"
+#include "Variation.h"
+#include "Goal_Seeking.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include <QToolBox>
 
-class MainWindow : public QMainWindow
+
+
+class TubeFREPropertiesWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-public slots:
 
-private slots:
-    void on_toolBox_currentChanged(int index);
+	TubeFREPropertiesWidget(QWidget *parent = nullptr);
+	~TubeFREPropertiesWidget();
+	void on_toolBox_currentChanged(int index);
 
 private:
-    Ui::MainWindow *ui;
-};
-#endif // MAINWINDOW_H
-void MainWindow::on_toolBox_currentChanged(int index)
-{
-    qDebug()<<"bnr start"<<endl;
-        Form *naveen = new Form();
+	Ui::TubeFREPropertiesWidgetClass ui;
+	
+	/*void setupToolBox();*/
 
-        if(index == 1)
-        {
-        naveen->show();
-        }
-        qDebug()<<"bnr end"<<endl;
+	
+};
+
+
+
+
+
+
+
+
+
+
+
+
+#include "TubeFREPropertiesWidget.h"
+
+
+
+TubeFREPropertiesWidget::TubeFREPropertiesWidget(QWidget *parent)
+	: QWidget(parent)
+{
+	ui.setupUi(this);
+
+    /*setupToolBox();
+   */
+	
 }
+
+
+	
+
+
+
+
+TubeFREPropertiesWidget::~TubeFREPropertiesWidget()
+{}
+
+//void TubeFREPropertiesWidget::setupToolBox()
+////{
+////    QWidget* flowAreaWidget = new Flow_Area();
+////    QWidget* frictionFactorWidget = new Friction_Factor();
+////    QWidget* heatTransferWidget = new Heat_Transfer();
+////    QWidget* variationWidget = new Variation();
+////    QWidget* goalSeekingWidget = new Goal_Seeking();
+////
+////    // Add widgets to the QToolBox
+////    ui.toolBox->addItem(flowAreaWidget, "Flow Area");
+////    ui.toolBox->addItem(frictionFactorWidget, "Friction Factor");
+////    ui.toolBox->addItem(heatTransferWidget, "Heat Transfer");
+////    ui.toolBox->addItem(variationWidget, "Variation");
+////    ui.toolBox->addItem(goalSeekingWidget, "Goal Seeking");
+////
+////
+//
+//}
+
+
+
+void TubeFREPropertiesWidget::on_toolBox_currentChanged(int index)
+{
+
+    Flow_Area* flow = new Flow_Area();
+
+    if (index == 1)
+    {
+        flow->show();
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+
+#include <QWidget>
+#include "ui_Flow_Area.h"
+#include "Flow_Area.h"
+#include "TubeFREPropertiesWidget.h"
+
+class Flow_Area : public QWidget
+{
+	Q_OBJECT
+
+public:
+	Flow_Area(QWidget *parent = nullptr);
+	~Flow_Area();
+
+private:
+	Ui::Flow_AreaClass ui;
+};
+
+
+
+
+#include "Flow_Area.h"
+
+Flow_Area::Flow_Area(QWidget *parent)
+	: QWidget(parent)
+{
+	ui.setupUi(this);
+}
+
+Flow_Area::~Flow_Area()
+{}
+
+
+
+
+
+
+
+
+
+
