@@ -1,155 +1,124 @@
-#pragma once
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QWidget>
-#include <QtWidgets>
 #include <QMainWindow>
-#include "TubeFREPropertiesWidget.h"
-#include <QToolBox>
-#include "ui_TubeFREPropertiesWidget.h"
-#include "Flow_Area.h"
-#include "Friction_Factor.h"
-#include "Heat_Transfer.h"
-#include "Variation.h"
-#include "Goal_Seeking.h"
+#include "form.h"
+#include "ui_form.h"
 
-#include <QToolBox>
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
 
-
-
-class TubeFREPropertiesWidget : public QWidget
+class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+    int bnr;
 
-	TubeFREPropertiesWidget(QWidget *parent = nullptr);
-	~TubeFREPropertiesWidget();
-	void on_toolBox_currentChanged(int index);
+public slots:
+    void naveen();
+
+private slots:
+    void on_toolBox_2_currentChanged(int index);
 
 private:
-	Ui::TubeFREPropertiesWidgetClass ui;
-	
-	/*void setupToolBox();*/
+    Ui::MainWindow *ui;
+};
+#endif // MAINWINDOW_H
+#ifndef FORM_H
+#define FORM_H
 
-	
+#include <QWidget>
+#include "mainwindow.h"
+
+namespace Ui {
+class Form;
+}
+
+class Form : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit Form(QWidget *parent = nullptr);
+    ~Form();
+
+    Ui::Form *ui;
+
+private:
+
 };
 
+#endif // FORM_H
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QDebug>
 
-
-
-
-
-
-
-
-
-
-
-#include "TubeFREPropertiesWidget.h"
-
-
-
-TubeFREPropertiesWidget::TubeFREPropertiesWidget(QWidget *parent)
-	: QWidget(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-	ui.setupUi(this);
+    ui->setupUi(this);
+    connect(ui->comboBox,SIGNAL(activated(int)),this,SLOT(naveen()));
 
-    /*setupToolBox();
-   */
-	
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
 
-	
 
 
-
-
-TubeFREPropertiesWidget::~TubeFREPropertiesWidget()
-{}
-
-//void TubeFREPropertiesWidget::setupToolBox()
-////{
-////    QWidget* flowAreaWidget = new Flow_Area();
-////    QWidget* frictionFactorWidget = new Friction_Factor();
-////    QWidget* heatTransferWidget = new Heat_Transfer();
-////    QWidget* variationWidget = new Variation();
-////    QWidget* goalSeekingWidget = new Goal_Seeking();
-////
-////    // Add widgets to the QToolBox
-////    ui.toolBox->addItem(flowAreaWidget, "Flow Area");
-////    ui.toolBox->addItem(frictionFactorWidget, "Friction Factor");
-////    ui.toolBox->addItem(heatTransferWidget, "Heat Transfer");
-////    ui.toolBox->addItem(variationWidget, "Variation");
-////    ui.toolBox->addItem(goalSeekingWidget, "Goal Seeking");
-////
-////
-//
-//}
-
-
-
-void TubeFREPropertiesWidget::on_toolBox_currentChanged(int index)
+void MainWindow::naveen()
 {
+    bnr = ui->comboBox->currentIndex();
 
-    Flow_Area* flow = new Flow_Area();
 
-    if (index == 1)
+    qDebug()<<"bnr start222"<<bnr<<endl;
+
+    Form *naveen11234 = new Form();
+    if(bnr == 0)
     {
-        flow->show();
+                QPixmap pixmap("/home/linkwell/toolbox/lakshadweep.png");
+   naveen11234->ui->label->setPixmap(pixmap);
+    }
+    else if(bnr == 1)
+    {
+          QPixmap pixmap("/home/linkwell/toolbox/ManipurGovtLogoOLD.png");
+        naveen11234->ui->label->setPixmap(pixmap);
+    }
+    else if(bnr == 2)
+    {
+          QPixmap pixmap("/home/linkwell/toolbox/NagalandGovtLogo_ORG.png");
+        naveen11234->ui->label->setPixmap(pixmap);
     }
 
+
+   naveen11234->show();
+
+
+
 }
+#include "form.h"
+#include "ui_form.h"
+#include <QDebug>
 
-
-
-
-
-
-
-
-
-
-
-#pragma once
-
-#include <QWidget>
-#include "ui_Flow_Area.h"
-#include "Flow_Area.h"
-#include "TubeFREPropertiesWidget.h"
-
-class Flow_Area : public QWidget
+Form::Form(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Form)
 {
-	Q_OBJECT
+   ui->setupUi(this);
 
-public:
-	Flow_Area(QWidget *parent = nullptr);
-	~Flow_Area();
-
-private:
-	Ui::Flow_AreaClass ui;
-};
+       ui->label->setAutoFillBackground(true);
 
 
-
-
-#include "Flow_Area.h"
-
-Flow_Area::Flow_Area(QWidget *parent)
-	: QWidget(parent)
-{
-	ui.setupUi(this);
 }
-
-Flow_Area::~Flow_Area()
-{}
-
-
-
-
-
-
-
-
-
+Form::~Form() {
+    delete ui;  // Clean up the Ui pointer
+}
 
