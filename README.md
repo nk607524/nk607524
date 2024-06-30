@@ -1,4 +1,3 @@
-
 #ifndef FORM_H
 #define FORM_H
 
@@ -30,6 +29,7 @@ private:
 };
 
 #endif // FORM_H
+
 
 #include "form.h"
 #include "ui_form.h"
@@ -72,6 +72,8 @@ void Form::showtime()
     ui->lineEdit_9->show();
     ui->lineEdit_10->show();
     ui->lineEdit_11->show();
+    ui->label->show();
+    ui->comboBox_2->show();
 }
 void Form::naveen()
 {
@@ -87,11 +89,13 @@ void Form::naveen()
                 ui->label_23->setPixmap(pixmap);
                 ui->label_20->setText("Tuning \n Factor");
                 ui->lineEdit_8->setText("1.0");
+                ui->comboBox_2->addItem("open with no overlap K=1");
                 ui->label_25->hide();
                 ui->label_24->hide();
                 ui->lineEdit_9->hide();
                 ui->lineEdit_10->hide();
                 ui->lineEdit_11->hide();
+
 
     }
     else if(bnr == 1)
@@ -102,6 +106,8 @@ void Form::naveen()
           ui->label_23->setPixmap(pixmap);
           ui->label_20->setText("Tuning \n Factor");
           ui->lineEdit_8->setText("1.0");
+          ui->comboBox_2->addItem("open with no overlap K=1");
+
           ui->label_25->hide();
           ui->label_24->hide();
           ui->lineEdit_9->hide();
@@ -121,6 +127,8 @@ void Form::naveen()
           ui->lineEdit_9->setText("0.7");
           ui->lineEdit_10->hide();
           ui->lineEdit_11->hide();
+          ui->label->hide();
+          ui->comboBox_2->hide();
     }
     else if(bnr == 3)
      {
@@ -135,6 +143,8 @@ void Form::naveen()
         ui->label_24->setText("BETA");
         ui->lineEdit_9->hide();
         ui->lineEdit_11->setText("0.0");
+        ui->label->hide();
+        ui->comboBox_2->hide();
     }
     else if(bnr == 4)
      {
@@ -149,19 +159,24 @@ void Form::naveen()
         ui->label_24->setText("BETA");
         ui->lineEdit_9->hide();
         ui->lineEdit_11->setText("0.0");
+        ui->label->hide();
+        ui->comboBox_2->hide();
     }
     else if(bnr == 5)
     {
         showtime();
 
-          ui->label_23->hide();
-          ui->label_20->hide();
-          ui->lineEdit_8->hide();
-          ui->label_25->hide();
-          ui->label_24->hide();
-          ui->lineEdit_9->hide();
-          ui->lineEdit_10->hide();
-          ui->lineEdit_11->hide();
+        QPixmap pixmap("/home/linkwell/live_project/mark.png");
+        ui->label_23->setPixmap(pixmap);
+        ui->label_20->setText("Orifice \n Length \n  (in)");
+        ui->lineEdit_8->setText("0.1000");
+        ui->label_25->setText("Orifice \nFillet Radius \n   (in)");
+        ui->lineEdit_10->setText("0.01");
+        ui->label_24->setText("BETA");
+        ui->lineEdit_9->hide();
+        ui->lineEdit_11->setText("0.0");
+        ui->label->hide();
+        ui->comboBox_2->hide();
     }
 }
 
