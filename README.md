@@ -1,56 +1,81 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
 
-#include <QMainWindow>
-#include "form.h"
-#include "ui_form.h"
-#include <QDebug>
+#ifndef FORM_H
+#define FORM_H
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include <QWidget>
+#include "mainwindow.h"
 
-class MainWindow : public QMainWindow
+namespace Ui {
+class Form;
+}
+
+class Form : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit Form(QWidget *parent = nullptr);
+    ~Form();
     int bnr;
 
+    Ui::Form *ui;
 
 public slots:
-    void naveen();
     void showtime();
+    void naveen();
 
 
-private slots:
 private:
-    Ui::MainWindow *ui;
+
 };
-#endif // MAINWINDOW_H
 
-#include "mainwindow.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#endif // FORM_H
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+#include "form.h"
+#include "ui_form.h"
+#include <QDebug>
+
+Form::Form(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Form)
 {
-    ui->setupUi(this);
-    naveen();
-    connect(ui->comboBox_4,SIGNAL(activated(int)),this,SLOT(naveen()));
+   ui->setupUi(this);
+   ui->comboBox->addItem("ingress");
+   ui->comboBox->addItem("Egress");
+
+   ui->comboBox->addItem("used input");
+
+   ui->comboBox->addItem("Huning");
+
+
+   ui->comboBox->addItem("Parker & Kercher");
+
+   ui->comboBox->addItem("Binder");
+
+
+   naveen();
+   connect(ui->comboBox,SIGNAL(activated(int)),this,SLOT(naveen()));
+
+
+
 }
-
-MainWindow::~MainWindow()
-{
-    delete ui;
+Form::~Form() {
+    delete ui;  // Clean up the Ui pointer
 }
-void MainWindow::naveen()
+void Form::showtime()
 {
-    bnr = ui->comboBox_4->currentIndex();
+    ui->label_23->show();
+    ui->label_20->show();
+    ui->lineEdit_8->show();
+    ui->label_25->show();
+    ui->label_24->show();
+    ui->lineEdit_9->show();
+    ui->lineEdit_10->show();
+    ui->lineEdit_11->show();
+}
+void Form::naveen()
+{
+    bnr = ui->comboBox->currentIndex();
 
 
     qDebug()<<"bnr start222"<<bnr<<endl;
@@ -140,15 +165,4 @@ void MainWindow::naveen()
     }
 }
 
-void MainWindow::showtime()
-{
-    ui->label_23->show();
-    ui->label_20->show();
-    ui->lineEdit_8->show();
-    ui->label_25->show();
-    ui->label_24->show();
-    ui->lineEdit_9->show();
-    ui->lineEdit_10->show();
-    ui->lineEdit_11->show();
-}
 
