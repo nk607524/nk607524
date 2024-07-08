@@ -63,6 +63,7 @@ Flow_Area::Flow_Area(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
+    miterbend();
     connect(ui.comboBox, SIGNAL(activated(int)), this, SLOT(miterbend()));
 
 
