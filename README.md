@@ -40,6 +40,8 @@ HeadLoss::HeadLoss(QWidget *parent)
 	ui.comboBox->addItem("Crane Flow Of Fluids");
 	ui.comboBox->addItem("User Input");
 
+       handleComboBoxChange();
+
 	connect(ui.comboBox, SIGNAL(activated(int)), this, SLOT(handleComboBoxChange()));
 
 }
