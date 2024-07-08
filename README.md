@@ -63,7 +63,6 @@ Flow_Area::Flow_Area(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    miterbend();
     connect(ui.comboBox, SIGNAL(activated(int)), this, SLOT(miterbend()));
 
 
@@ -122,6 +121,8 @@ void Flow_Area::setMode(Mode mode)
     ui.comboBox->addItem("Perimeter, Area");
     ui.comboBox->addItem("Perimeter, De");
     }
+        miterbend();
+
 }
 
 void Flow_Area::showarea()
