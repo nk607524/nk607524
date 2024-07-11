@@ -55,3 +55,26 @@ TableView::~TableView()
 {
     delete ui;
 }
+
+String wstampStatus = "TAMPERED";
+                                                    System.out.println("WEIGHING SCALE" + wstampStatus);
+                                                    if (DealerLoginBy == 2 || PartialOfflineLogin == 1) {
+                                                        temp = receivedStr;
+
+                                                        if (temp != null && temp.contains("YES")) {
+                                                            String[] parts = receivedStr.split("[ <>]+");
+
+                                                            System.out.println("macid++++" + parts[1]);
+                                                            System.out.println("ws code" + parts[2]);
+                                                            databaseHelper.tamperStatus(fpsId, "YES", parts[1], parts[2], "null", "null");
+                                                        }
+
+
+                                                    } else {
+                                                        reportTampered(fpsId, "YES", parts[1], parts[2], "null", parts[1]);
+                                                    }
+                                                    // socket.getOutputStream().write("RECEIVED".getBytes());
+                                                } else if (receivedStr.contains("NO")) {
+                                                    wstampStatus = "NOTTAMPERED";
+                                                    System.out.println("WEIGHING SCALE" + wstampStatus);
+                                                }
