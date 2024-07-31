@@ -1,12 +1,142 @@
+/*************************************pushbutton*****************************/
+#ifndef BUTTONDELEGATE_H
+#define BUTTONDELEGATE_H
+
+#include <QStyledItemDelegate>
+#include <QPushButton>
+#include <QApplication>
+#include <QPainter>
+
+class ButtonDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    ButtonDelegate(QObject *parent = nullptr);
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+
+signals:
+    void buttonClicked(const QModelIndex &index) const;
+
+
+};
+
+#endif // BUTTONDELEGATE_H
+#include "buttondelegate.h"
+
+ButtonDelegate::ButtonDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+{
+}
+
+QWidget *ButtonDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QPushButton *button = new QPushButton(parent);
+    button->setText("Click Me");
+    connect(button, &QPushButton::clicked, this, [=] {
+        emit buttonClicked(index);
+    });
+    return button;
+}
+
+void ButtonDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    // No need to set data for this button delegate
+}
+
+void ButtonDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    // No need to set data for this button delegate
+}
+
+void ButtonDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    editor->setGeometry(option.rect);
+}
+
+void ButtonDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionButton buttonOption;
+    buttonOption.rect = option.rect;
+    buttonOption.text = "Click Me";
+    QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
+}
+/********************************spinbox*****************************/
+#ifndef SPINBOXDELEGATE_H
+#define SPINBOXDELEGATE_H
+
+#include <QStyledItemDelegate>
+#include <QSpinBox>
+
+class SpinBoxDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit SpinBoxDelegate(QObject *parent = nullptr);
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+};
+
+#endif // SPINBOXDELEGATE_H
+#include "spinboxdelegate.h"
+
+SpinBoxDelegate::SpinBoxDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+{
+}
+
+QWidget *SpinBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QDoubleSpinBox *doubleSpinBox = new QDoubleSpinBox(parent);
+    doubleSpinBox->setDecimals(2); // Allow two decimal places
+    doubleSpinBox->setMinimum(0.2);
+    doubleSpinBox->setMaximum(2.2);
+    doubleSpinBox->setSingleStep(0.01); // Set the step size for the spinbox
+    return doubleSpinBox;
+}
+
+void SpinBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    double value = index.model()->data(index, Qt::EditRole).toDouble();
+    QDoubleSpinBox *doubleSpinBox = static_cast<QDoubleSpinBox*>(editor);
+    doubleSpinBox->setValue(value);
+}
+
+void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    QDoubleSpinBox *doubleSpinBox = static_cast<QDoubleSpinBox*>(editor);
+    doubleSpinBox->interpretText();
+    double value = doubleSpinBox->value();
+    model->setData(index, value, Qt::EditRole);
+}
+
+void SpinBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    editor->setGeometry(option.rect);
+}
+
+
+
+/********************************mainwindow****************************/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QWidget>
-#include <QStringList>
+#include "buttondelegate.h"
+#include <QStandardItemModel>
 #include <QDebug>
-#include <QComboBox>
-#include "Util.h"
+#include <QColorDialog>
+#include "spinboxdelegate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,181 +149,84 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    struct FlowTypeLabel
-       {
-           en_FlowSectionType L_flowAreaType;
-           QString l_strLabel1;
-           QString l_strLabel2;
-           QString l_strLabel3;
-           QString l_strLabel4;
-           QString l_strLabel5;
-           QString l_strLabel6;
-           QString l_strLabel7;
-           QString l_strLabel8;
-           bool l_bCombo1Enabled;
-           bool l_bCombo2Enabled;
-           bool l_bEdit1Enabled;
-           bool l_bEdit2Enabled;
-
-           en_FlowSectionType getType() const { return L_flowAreaType; }
-           void setType(en_FlowSectionType newType) { L_flowAreaType = newType; }
-
-           QString getLabel1Text() const { return l_strLabel1; }
-           QString getLabel2Text() const { return l_strLabel2; }
-           QString getLabel3Text() const { return l_strLabel3; }
-           void setLabel1Text(const QString& text) { l_strLabel1 = text; }
-           void setLabel2Text(const QString& text) { l_strLabel2 = text; }
-           void setLabel3Text(const QString& text) { l_strLabel3 = text; }
-           bool isCombo1Enabled() const { return l_bCombo1Enabled; }
-           bool isCombo2Enabled() const { return l_bCombo2Enabled; }
-           bool isEdit1Enabled() const { return l_bEdit1Enabled; }
-           bool isEdit2Enabled() const { return l_bEdit2Enabled; }
-           void setEdit1Enabled(bool enabled) { l_bEdit1Enabled = enabled; }
-           void setEdit2Enabled(bool enabled) { l_bEdit2Enabled = enabled; }
-       };
-
-       FlowTypeLabel flowArea;
-       QStringList hideshow;
 private slots:
-    void onComboBoxChanged(int index);
+    void handleButtonClicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
-    QStringList getEnumStringList() const;
-    en_FlowSectionType indexToEnum(int index) const;
-    void updateUI(en_FlowSectionType type);
-    FlowTypeLabel getLabels(en_FlowSectionType type);
+    QStandardItemModel *model;
 
 };
 #endif // MAINWINDOW_H
-
-
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "buttondelegate.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), model(new QStandardItemModel(4, 2, this))
 {
     ui->setupUi(this);
 
-//    QMetaEnum metaEnum = QMetaEnum::fromType<flowArea.L_flowAreaType>();
-//        for (int i = 0; i < metaEnum.keyCount(); ++i) {
-//            ui->comboBox->addItem(metaEnum.key(i), metaEnum.value(i));
-//        }
-//    for (int i = 0; i < voltageRangeEnum.keyCount(); ++i) {
-//        qDebug()<<"bnrr2345678"<<voltageRangeEnum.key(i), voltageRangeEnum.value(i);
-//        ui->comboBox->addItem(voltageRangeEnum.key(i), voltageRangeEnum.value(i));
-//    }
+    QStringList horizontalHeaderLabels;
+    horizontalHeaderLabels << "Tube OD \n  (in)" << "WthK(in)";
+
+    model->setHorizontalHeaderLabels(horizontalHeaderLabels);
+    QStringList NameColumn;
+    NameColumn << "Background Color" << "Drawing color" << "Text Label Offset X" << "Text Label Offset Y";
+
+    for (int row = 0; row < 4; ++row) {
+        QStandardItem *item = new QStandardItem(NameColumn.at(row));
+        model->setItem(row, 0, item);
+    }
+
+    SpinBoxDelegate *spinBoxDelegate = new SpinBoxDelegate(this);
+       ui->tableView->setItemDelegateForColumn(1, spinBoxDelegate);
+     ui->tableView->setItemDelegateForRow(2, spinBoxDelegate); // Set delegate for row 2
+         ui->tableView->setItemDelegateForRow(3, spinBoxDelegate); // Set delegate for row 3
+
+    // Set the ButtonDelegate for the second column (index 1)
+    ButtonDelegate *buttonDelegate = new ButtonDelegate(this);
+    connect(buttonDelegate, &ButtonDelegate::buttonClicked, this, &MainWindow::handleButtonClicked);
+    ui->tableView->setItemDelegateForColumn(1, buttonDelegate);
+
+    ui->tableView->setModel(model);
+    ui->tableView->verticalHeader()->hide();
+    ui->tableView->horizontalHeader()->hide();
+    ui->tableView->setColumnWidth(0, 200);
+
+    QStringList Nodelist;
+               Nodelist<<"BC Node See"<<"Aero BC Node Size"<<"Free Node Size"<<"Station Node Size";
+
+               for (int row = 0; row < 4; ++row) {
+
+                     QStandardItem *item = new QStandardItem(Nodelist.at(row));
+                      model->setItem(row, 0, item);
+
+                 }
 
 
-    ui->comboBox->addItems(getEnumStringList());
-       connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onComboBoxChanged);
 
-       flowArea.setType(STANDARD_DRILL);
-       updateUI(flowArea.getType());
+     ui->tableView_2->setModel(model);
+     ui->tableView_2->verticalHeader()->hide();
+     ui->tableView_2->horizontalHeader()->hide();
+     ui->tableView_2->setColumnWidth(0,200);
+
+        ui->tableView_2->setItemDelegateForColumn(1, spinBoxDelegate);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-QStringList MainWindow::getEnumStringList() const
-{
-    return {
-        "Standard Drill", "Circle", "Axial Gap", "Radial Gap, Do", "Radial Gap, Di",
-        "Radial Gap, Davg", "Annulus", "Rectangle", "Square", "Round End Slot",
-        "Round Slot, C-C", "Round Slot, E-E", "Ellipse", "Semi Circle", "Circular Sector",
-        "Right Triangle", "Isosceles Triangle", "Dh, Perimeter", "Dh, Area",
-        "Perimeter, Area", "Perimeter, De", "Standard Tube", "Non-Standard Tube",
-        "Circular, Do, Tw", "Circular, Di", "Geometric Area", "Effective Area"
-    };
-}
 
-en_FlowSectionType MainWindow::indexToEnum(int index) const
+void MainWindow::handleButtonClicked(const QModelIndex &index)
 {
-    switch (index) {
-    case 0: return STANDARD_DRILL;
-    case 1: return CIRCLE;
-    case 2: return AXIAL_GAP;
-    case 3: return RADIAL_GAP_DO;
-    case 4: return RADIAL_GAP_DI;
-    case 5: return RADIAL_GAP_DAVG;
-    case 6: return ANNULUS;
-    case 7: return RECTANGLE;
-    case 8: return SQUARE;
-    case 9: return ROUND_END_SLOT;
-    case 10: return ROUND_SLOT_CC;
-    case 11: return ROUND_SLOT_EE;
-    case 12: return ELLIPSE;
-    case 13: return SEMI_CIRCLE;
-    case 14: return CIRCULAR_SECTOR;
-    case 15: return RIGHT_TRIANGLE;
-    case 16: return ISOSCELES_TRIANGLE;
-    case 17: return DH_PERIMETER;
-    case 18: return DH_AREA;
-    case 19: return PERIMETER_AREA;
-    case 20: return PERIMETER_DE;
-    case 21: return STANDARD_TUBE;
-    case 22: return NONSTANDARD_TUBE;
-    case 23: return CIRCULAR_DO_TW;
-    case 24: return CIRCULAR_DI;
-    case 25: return GEOMETRIC_AREA;
-    case 26: return EFFECTIVE_AREA;
-    default: return STANDARD_DRILL;
+    qDebug() << "Button in row" << index.row() << "clicked";
+    QColor color = QColorDialog::getColor(Qt::white, this, "Select Color");
+
+    if (color.isValid()) {
+        // Perform actions based on the selected color
+        qDebug() << "Selected color:" << color;
     }
 }
-
-void MainWindow::onComboBoxChanged(int index)
-{
-    flowArea.setType(indexToEnum(index));
-    updateUI(flowArea.getType());
-    qDebug() << "Selected Flow Area Type:" << index;
-}
-
-void MainWindow::updateUI(en_FlowSectionType type)
-{
-    FlowTypeLabel labels = getLabels(type);
-
-    ui->label_2->setText(labels.getLabel1Text());
-    ui->label_3->setText(labels.getLabel2Text());
-    ui->label_4->setText(labels.getLabel3Text());
-
-    ui->comboBox_2->setEnabled(labels.isCombo1Enabled());
-    ui->comboBox_3->setEnabled(labels.isCombo2Enabled());
-
-    ui->lineEdit_2->setEnabled(labels.isEdit1Enabled());
-    ui->lineEdit_3->setEnabled(labels.isEdit2Enabled());
-
-    // Apply specific hiding logic here if necessary
-}
-
-MainWindow::FlowTypeLabel MainWindow::getLabels(en_FlowSectionType type)
-{
-    FlowTypeLabel label;
-    label.setType(type);
-
-    switch (type) {
-    case STANDARD_DRILL:
-        label.setLabel1Text("Diameter Inches(in)");
-        label.setLabel2Text("bnr Inner12345(in)");
-        label.setEdit1Enabled(false);
-        label.setEdit2Enabled(false);
-        break;
-    case CIRCLE:
-        label.setLabel1Text("circle Inches(in)");
-        label.setLabel2Text("crile2");
-        label.setEdit1Enabled(true);
-        label.setEdit2Enabled(true);
-        break;
-    // Add cases for other enum values and initialize the labels and enabled states accordingly
-    default:
-        break;
-    }
-
-    return label;
-}
-
-
-
