@@ -1,9 +1,9 @@
-#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QColor>
 #include <QPushButton>
+#include "standalone.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,15 +16,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Standalone *objStandalone;
 private slots:
     void on_pushButton_clicked();
+    void on_naveen_clicked();
 
 private:
     Ui::MainWindow *ui;
-    void drawOnButton(QPushButton *button, const QColor &color);
+  //  void drawOnButton(QPushButton *button, const QColor &color);
     QColor color;
+    QPushButton *naveen;
 };
 #endif // MAINWINDOW_H
+
+
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -38,17 +43,68 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     color = QColor(0, 255, 0); // Default color
-       drawOnButton(ui->pushButton, color); // Draw on button initially
+   objStandalone = new Standalone();
+           objStandalone->drawOnButton(ui->pushButton,color);
 
-       // Connect the button's clicked signal to the slot
-       connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pushButton_clicked);
+      naveen = new QPushButton(this);
+objStandalone->drawOnButton(naveen,color);
+
+        connect(naveen, &QPushButton::clicked, this, &MainWindow::on_naveen_clicked);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::drawOnButton(QPushButton *button, const QColor &color)
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    QColor selectedColor = QColorDialog::getColor(color, this, "Select Color");
+
+    if (selectedColor.isValid()) {
+        color = selectedColor;
+        objStandalone->drawOnButton(ui->pushButton, color); // Redraw the button with the new color
+    }
+}
+void MainWindow::on_naveen_clicked()
+{
+    QColor selectedColor = QColorDialog::getColor(color, this, "Select Color");
+
+    if (selectedColor.isValid()) {
+        color = selectedColor;
+      objStandalone->drawOnButton(naveen, color); // Redraw the button with the new color
+    }
+}
+
+#ifndef STANDALONE_H
+#define STANDALONE_H
+
+#include <QPainter>
+#include <QColor>
+#include <QPen>
+#include <QDebug>
+#include <QPushButton>
+
+class Standalone : public QPushButton
+{
+public:
+    Standalone();
+    void drawOnButton(QPushButton *button, const QColor &color);
+
+};
+
+#endif // STANDALONE_H
+#include "standalone.h"
+
+
+
+Standalone::Standalone()
+{
+
+}
+
+void Standalone::drawOnButton(QPushButton *button, const QColor &color)
 {
     // Create a QPixmap with the same size as the button
 
@@ -81,13 +137,4 @@ void MainWindow::drawOnButton(QPushButton *button, const QColor &color)
 
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    QColor selectedColor = QColorDialog::getColor(color, this, "Select Color");
-
-    if (selectedColor.isValid()) {
-        color = selectedColor;
-        drawOnButton(ui->pushButton, color); // Redraw the button with the new color
-    }
-}
 
